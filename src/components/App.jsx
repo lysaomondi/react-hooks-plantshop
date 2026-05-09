@@ -1,14 +1,36 @@
-import React from "react";
-import Header from "./Header";
-import PlantPage from "./PlantPage";
+import { useState, useEffect } from "react";
+import NewPlantForm from "./NewPlantForm";
+import PlantList from "./PlantList";
 
-function App() {
+export default function App() {
+  const [plants, setPlants] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:6001/plants")
+      .then((res) => res.json())
+      .then((data) => setPlants(data));
+  }, []);
+
+  // ✅ filter logic
+  const displayedPlants = plants.filter((plant) =>
+    plant.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="app">
-      <Header />
-      <PlantPage />
-    </div>
+    <main>
+      <NewPlantForm setPlants={setPlants} />
+
+      {/* ✅ REQUIRED BY TEST */}
+      <div className="searchbar">
+        <input
+          placeholder="Type a name to search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <PlantList plants={displayedPlants} setPlants={setPlants} />
+    </main>
   );
 }
-
-export default App;

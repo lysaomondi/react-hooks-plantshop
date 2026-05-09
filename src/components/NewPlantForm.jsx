@@ -1,17 +1,72 @@
-import React from "react";
+import { useState } from "react";
 
-function NewPlantForm() {
+export default function NewPlantForm({ setPlants }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    image: "",
+    price: ""
+  });
+
+  function handleChange(e) {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const newPlant = {
+      name: formData.name,
+      image: formData.image,
+      price: formData.price
+    };
+
+    fetch("http://localhost:6001/plants", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPlant),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setPlants((prev) => [...prev, data]);
+      });
+
+    // optional: reset form after submit
+    setFormData({
+      name: "",
+      image: "",
+      price: ""
+    });
+  }
+
   return (
-    <div className="new-plant-form">
-      <h2>New Plant</h2>
-      <form>
-        <input type="text" name="name" placeholder="Plant name" />
-        <input type="text" name="image" placeholder="Image URL" />
-        <input type="number" name="price" step="0.01" placeholder="Price" />
-        <button type="submit">Add Plant</button>
-      </form>
-    </div>
+    <form className="new-plant-form" onSubmit={handleSubmit}>
+      <input
+        placeholder="Plant name"
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+      />
+
+      <input
+        placeholder="Image URL"
+        name="image"
+        value={formData.image}
+        onChange={handleChange}
+      />
+
+      <input
+        placeholder="Price"
+        name="price"
+        value={formData.price}
+        onChange={handleChange}
+      />
+
+      <button type="submit">Add Plant</button>
+    </form>
   );
 }
-
-export default NewPlantForm;

@@ -3,7 +3,7 @@
 ## Demo
 
 Use this gif as an example of how the app should work.
-
+![Plantsy Screenshot](./src/assets/screenshot.png)
 ![Demo GIF](./demo.gif)
 
 ## Instructions
