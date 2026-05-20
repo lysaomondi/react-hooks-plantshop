@@ -1,14 +1,14 @@
 import React from "react";
 import NewPlantForm from "./NewPlantForm";
-import Search from "./Search";
 import PlantList from "./PlantList";
+import Search from "./Search";
 
-function PlantPage({ plants, setPlants, search, setSearch }) {
+function PlantPage() {
   return (
     <main>
-      <NewPlantForm plants={plants} setPlants={setPlants} />
-      <Search search={search} setSearch={setSearch} />
-      <PlantList plants={plants} setPlants={setPlants} />
+      <NewPlantForm />
+      <Search />
+      <PlantList />
     </main>
   );
 }
